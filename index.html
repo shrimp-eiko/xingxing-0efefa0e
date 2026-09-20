@@ -47,21 +47,26 @@
     </section>
 
     <section id="screen-level-1" class="screen level-screen">
-      <div class="level-layout">
+      <div class="level-layout first-meeting-layout">
         <div class="level-heading">
           <span class="level-number">01</span>
           <p class="eyebrow">第一次相遇</p>
-          <h2>点亮第一束星光</h2>
-          <p>找到藏在夜色里的 7 只萤火虫。</p>
+          <h2>把那句话找回来</h2>
+          <p>先别急，按顺序找回那晚的每一个字。</p>
         </div>
-        <div id="fireflyField" class="interaction-field firefly-field">
-          <div class="first-line-card">
+
+        <div id="phraseField" class="first-meeting-stage">
+          <div class="meeting-halo"></div>
+          <div id="phraseTokens" class="phrase-tokens"></div>
+          <div class="phrase-assembly">
             <span>我们的第一句话</span>
-            <strong>“你好，你是虾滑吗”</strong>
+            <strong id="assembledPhrase" aria-live="polite"></strong>
+            <p id="phraseNote">有点笨，但我一直记得。</p>
           </div>
         </div>
-        <p id="level1Hint" class="level-hint">还没有点亮：7</p>
-        <button class="next-button" type="button" data-next="level-2" disabled>收下这颗星 <span>→</span></button>
+
+        <p id="level1Hint" class="level-hint">先找到“你好”</p>
+        <button class="next-button" type="button" data-next="level-2" disabled>收下第一句话 <span>→</span></button>
       </div>
     </section>
 
