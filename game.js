@@ -168,36 +168,71 @@
     window.addEventListener("resize", resize, { passive: true });
   }
 
-  function buildFireflies() {
-    const field = $("#fireflyField");
-    $$(".firefly", field).forEach((node) => node.remove());
-    const positions = [
-      [17, 17], [39, 26], [67, 15], [82, 42], [63, 53],
-      [28, 57], [48, 42]
+  function initFirstMeeting() {
+    const tokenLayer = $("#phraseTokens");
+    const output = $("#assembledPhrase");
+    const note = $("#phraseNote");
+    const hint = $("#level1Hint");
+    const nextButton = $("#screen-level-1 .next-button");
+    const tokens = [
+      { label: "你好", append: "你好", x: 22, y: 25, tilt: -3 },
+      { label: "你是", append: "，你是", x: 75, y: 22, tilt: 2 },
+      { label: "虾滑", append: "虾滑", x: 25, y: 58, tilt: 2 },
+      { label: "吗", append: "吗", x: 73, y: 60, tilt: -2 }
     ];
+    let step = 0;
 
-    positions.forEach(([x, y], index) => {
+    function markNextToken() {
+      $$(".phrase-token", tokenLayer).forEach((button, index) => {
+        button.classList.toggle("next", index === step);
+      });
+
+      if (step < tokens.length) {
+        hint.textContent = `找到“${tokens[step].label}”`;
+      }
+    }
+
+    tokens.forEach((token, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "firefly";
-      button.style.left = `${x}%`;
-      button.style.top = `${y}%`;
-      button.style.animationDelay = `${index * -0.22}s`;
-      button.setAttribute("aria-label", `点亮第 ${index + 1} 只萤火虫`);
+      button.className = "phrase-token";
+      button.textContent = token.label;
+      button.style.left = `${token.x}%`;
+      button.style.top = `${token.y}%`;
+      button.style.setProperty("--tilt", `${token.tilt}deg`);
+      button.setAttribute("aria-label", `第 ${index + 1} 个词：${token.label}`);
+
       button.addEventListener("click", () => {
         if (button.classList.contains("collected")) return;
+
+        if (index !== step) {
+          button.classList.remove("wrong");
+          requestAnimationFrame(() => button.classList.add("wrong"));
+          setTimeout(() => button.classList.remove("wrong"), 420);
+          playTone(220, 0.09, "triangle", 0.012);
+          return;
+        }
+
         button.classList.add("collected");
-        playTone(720 + index * 45, 0.11, "sine", 0.02);
-        const left = positions.length - $$(".firefly.collected", field).length;
-        $("#level1Hint").textContent = left > 0 ? `还没有点亮：${left}` : "七只萤火虫都亮了。";
-        if (left === 0) {
+        button.disabled = true;
+        output.textContent += token.append;
+        step += 1;
+        playTone(620 + index * 75, 0.13, "sine", 0.02);
+        markNextToken();
+
+        if (step === tokens.length) {
+          note.classList.add("show");
+          hint.textContent = "原来我们的第一句话，是你先说的。";
+          nextButton.disabled = false;
           collectFragment(1);
-          $("#screen-level-1 .next-button").disabled = false;
           playSuccess();
         }
       });
-      field.appendChild(button);
+
+      tokenLayer.appendChild(button);
     });
+
+    markNextToken();
   }
 
   function initTrainLevel() {
@@ -637,7 +672,7 @@
 
   function init() {
     initStars();
-    buildFireflies();
+    initFirstMeeting();
     initTrainLevel();
     buildMemoryGame();
     initRecordLevel();
