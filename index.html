@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090816">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>寻星计划 · 给杏杏子</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+
+  <main id="app" class="game-shell" aria-label="寻星计划互动小游戏">
+    <canvas id="starCanvas" aria-hidden="true"></canvas>
+
+    <header id="topbar" class="topbar hidden">
+      <div class="mini-brand">
+        <span class="mini-heart">♥</span>
+        <span>寻星计划</span>
+      </div>
+      <div id="fragments" class="fragments" aria-label="已收集的记忆碎片">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <button id="skipButton" class="skip-button" type="button">直接看结尾</button>
+    </header>
+
+    <section id="screen-intro" class="screen active intro-screen">
+      <div class="intro-orbit orbit-one"></div>
+      <div class="intro-orbit orbit-two"></div>
+      <div class="intro-content">
+        <p class="eyebrow">FOR 杏杏子</p>
+        <div class="moon-wrap">
+          <div class="moon"></div>
+          <span class="moon-heart">♥</span>
+        </div>
+        <h1>寻星计划</h1>
+        <p class="intro-copy">有些话被我藏起来了。<br>走过五个小小的关卡，就能找到它。</p>
+        <button id="startButton" class="primary-button glow-button" type="button">
+          <span>开始寻星</span>
+          <small>建议戴上耳机</small>
+        </button>
+        <p class="tiny-note">点击后播放《我们好像在哪见过》</p>
+      </div>
+    </section>
+
+    <section id="screen-level-1" class="screen level-screen">
+      <div class="level-layout">
+        <div class="level-heading">
+          <span class="level-number">01</span>
+          <p class="eyebrow">第一次相遇</p>
+          <h2>点亮第一束星光</h2>
+          <p>找到藏在夜色里的 7 只萤火虫。</p>
+        </div>
+        <div id="fireflyField" class="interaction-field firefly-field">
+          <div class="first-line-card">
+            <span>我们的第一句话</span>
+            <strong>“你好，你是虾滑吗”</strong>
+          </div>
+        </div>
+        <p id="level1Hint" class="level-hint">还没有点亮：7</p>
+        <button class="next-button" type="button" data-next="level-2" disabled>收下这颗星 <span>→</span></button>
+      </div>
+    </section>
+
+    <section id="screen-level-2" class="screen level-screen train-level-screen">
+      <div class="level-layout train-layout">
+        <div class="level-heading">
+          <span class="level-number">02</span>
+          <p class="eyebrow">一起走过的路</p>
+          <h2>三站，都和你有关</h2>
+          <p>窗外正在经过我们一起去过的城市。</p>
+        </div>
+
+        <div id="trainWindow" class="train-window" data-stage="0">
+          <div class="window-frame">
+            <div class="scene scene-nanjing active">
+              <span class="scene-moon"></span>
+              <span class="scene-lights lights-one"></span>
+              <span class="scene-lights lights-two"></span>
+              <span class="scene-skyline"></span>
+            </div>
+            <div class="scene scene-nanning">
+              <span class="city-glow"></span>
+              <span class="night-market-lights"></span>
+            </div>
+            <div class="scene scene-yangshuo">
+              <span class="mountain mountain-back"></span>
+              <span class="mountain mountain-mid"></span>
+              <span class="mountain mountain-front"></span>
+              <span class="river-light"></span>
+            </div>
+            <div id="rainLayer" class="rain-layer" aria-hidden="true"></div>
+            <div class="window-glare"></div>
+            <div id="holdIndicator" class="hold-indicator"><span>按住</span></div>
+          </div>
+          <div class="train-window-sill">
+            <i></i><i></i><i></i>
+          </div>
+        </div>
+
+        <div id="ticketRail" class="ticket-rail" aria-label="到站车票"></div>
+
+        <div id="trainCaption" class="train-caption">
+          <span id="trainState">下一站</span>
+          <strong id="trainCity">南京</strong>
+          <p id="trainMemory">点击车窗，让列车停一下。</p>
+        </div>
+
+        <button id="trainAction" class="train-action" type="button">停靠南京</button>
+        <p id="level2Hint" class="level-hint">列车正在驶入第一站</p>
+        <button class="next-button" type="button" data-next="level-3" disabled>继续向前 <span>→</span></button>
+      </div>
+    </section>
+
+    <section id="screen-level-3" class="screen level-screen">
+      <div class="level-layout">
+        <div class="level-heading">
+          <span class="level-number">03</span>
+          <p class="eyebrow">秘密频道</p>
+          <h2>找回我们的默契</h2>
+          <p>翻开卡片，把属于我们的四组记忆配成一对。</p>
+        </div>
+        <div id="memoryGrid" class="memory-grid" aria-label="记忆配对游戏"></div>
+        <div id="secretReveal" class="secret-reveal">
+          <span>只有我们懂的频道已接通</span>
+          <strong>“羊腰子爱闻口臭”</strong>
+        </div>
+        <p id="level3Hint" class="level-hint">已配对：0 / 4</p>
+        <button class="next-button" type="button" data-next="level-4" disabled>下一段回忆 <span>→</span></button>
+      </div>
+    </section>
+
+    <section id="screen-level-4" class="screen level-screen">
+      <div class="level-layout vinyl-layout">
+        <div class="level-heading">
+          <span class="level-number">04</span>
+          <p class="eyebrow">我们的歌</p>
+          <h2>让唱片慢慢转起来</h2>
+          <p>每点一次，就多想起一个和你有关的地方。</p>
+        </div>
+        <div class="record-stage">
+          <button id="vinyl" class="vinyl" type="button" aria-label="播放我们的歌">
+            <span class="vinyl-ring ring-one"></span>
+            <span class="vinyl-ring ring-two"></span>
+            <span class="vinyl-ring ring-three"></span>
+            <span class="vinyl-label">
+              <i>♥</i>
+              <small>羊羊子<br>送给杏杏子</small>
+            </span>
+          </button>
+          <div class="record-copy">
+            <p class="song-title">《我们好像在哪见过》</p>
+            <div id="recordLines" class="record-lines">
+              <p>在南京的晚风里</p>
+              <p>在南宁的街灯下</p>
+              <p>在阳朔的山水间</p>
+              <p>原来，我们早就走进了彼此的生活。</p>
+            </div>
+          </div>
+        </div>
+        <button class="next-button" type="button" data-next="level-5" disabled>把歌收进心里 <span>→</span></button>
+      </div>
+    </section>
+
+    <section id="screen-level-5" class="screen level-screen">
+      <div class="level-layout">
+        <div class="level-heading">
+          <span class="level-number">05</span>
+          <p class="eyebrow">以后</p>
+          <h2>让两颗星相遇</h2>
+          <p>先找到杏杏子，再找到羊羊子。</p>
+        </div>
+        <div class="future-map">
+          <div class="future-path"></div>
+          <button class="person-star her-star" type="button" data-person="her">
+            <span class="star-glow">✦</span>
+            <strong>杏杏子</strong>
+          </button>
+          <div class="heart-bridge">♥</div>
+          <button class="person-star him-star" type="button" data-person="him">
+            <span class="star-glow">✦</span>
+            <strong>羊羊子</strong>
+          </button>
+        </div>
+        <button id="futureButton" class="primary-button future-button" type="button" disabled>
+          一起走向未来
+        </button>
+        <p id="level5Hint" class="level-hint">还差两颗星星</p>
+      </div>
+    </section>
+
+    <section id="screen-final" class="screen final-screen">
+      <div class="final-stars" aria-hidden="true"></div>
+      <div class="final-layout">
+        <p class="eyebrow">彩蛋已解锁</p>
+        <h2>五片星光，都指向你</h2>
+        <div class="heart-constellation" aria-label="五颗星组成爱心">
+          <span style="--x: 16%; --y: 42%">✦</span>
+          <span style="--x: 27%; --y: 20%">✦</span>
+          <span style="--x: 50%; --y: 31%">✦</span>
+          <span style="--x: 72%; --y: 20%">✦</span>
+          <span style="--x: 84%; --y: 42%">✦</span>
+          <svg viewBox="0 0 300 180" aria-hidden="true">
+            <path d="M48 76 C48 30 100 16 150 57 C200 16 252 30 252 76 C252 130 181 161 150 170 C119 161 48 130 48 76Z"></path>
+          </svg>
+        </div>
+        <div class="photo-strip" aria-label="我们的照片">
+          <figure><img data-photo="1" alt="我们的照片 1"><div class="photo-placeholder"><span>南京</span><small>第一张回忆</small></div></figure>
+          <figure><img data-photo="2" alt="我们的照片 2"><div class="photo-placeholder"><span>南宁</span><small>第二张回忆</small></div></figure>
+          <figure><img data-photo="3" alt="我们的照片 3"><div class="photo-placeholder"><span>阳朔</span><small>第三张回忆</small></div></figure>
+          <figure><img data-photo="4" alt="我们的照片 4"><div class="photo-placeholder"><span>下一站</span><small>第四张回忆</small></div></figure>
+        </div>
+        <div id="letterCard" class="letter-card">
+          <p>杏杏子：</p>
+          <p>我们好像在南京、南宁和阳朔之间，把很普通的日子，过成了值得收藏的故事。</p>
+          <p>翻过这五关，我没想多说别的。</p>
+        </div>
+        <button id="revealButton" class="primary-button reveal-button" type="button" disabled>等星光落下来…</button>
+        <div id="finalReveal" class="final-reveal">
+          <p class="handwriting">没想多说的，<br>老了依然想搂着你腰，<br>扶着你逛街。</p>
+          <p class="next-stop">南京、南宁、阳朔都只是开始，<br>下一站，还是你。</p>
+          <div class="question">杏杏子，愿意继续和我一起，把以后也走成我们的故事吗？</div>
+          <div class="answer-row">
+            <button class="answer-button" type="button" data-answer="yes">愿意</button>
+            <button class="answer-button ghost" type="button" data-answer="also">当然愿意</button>
+          </div>
+        </div>
+        <div id="answerMessage" class="answer-message">
+          <span>♥</span>
+          <strong>那说好了，以后每一页都是我们。</strong>
+          <small>—— 羊羊子</small>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <audio id="bgm" loop preload="auto" playsinline></audio>
+
+  <script src="./config.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>
