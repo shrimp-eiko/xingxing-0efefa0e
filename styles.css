@@ -473,7 +473,11 @@ button:focus-visible {
   line-height: .8;
 }
 
-.interaction-field {
+.first-meeting-layout .level-heading {
+  margin-bottom: 12px;
+}
+
+.first-meeting-stage {
   position: relative;
   flex: 1;
   min-height: 370px;
@@ -481,99 +485,149 @@ button:focus-visible {
   border: 1px solid var(--line);
   border-radius: 27px;
   background:
-    radial-gradient(circle at 50% 45%, rgba(153, 120, 234, .13), transparent 45%),
-    rgba(12, 10, 27, .58);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    radial-gradient(circle at 50% 44%, rgba(255, 219, 170, .11), transparent 25%),
+    radial-gradient(circle at 50% 70%, rgba(108, 178, 194, .08), transparent 34%),
+    linear-gradient(180deg, #090d18, #0b0a14 68%, #100b12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), inset 0 -50px 75px rgba(0, 0, 0, .28);
 }
 
-.firefly-field {
-  background:
-    linear-gradient(rgba(10, 8, 24, .32), rgba(10, 8, 24, .52)),
-    radial-gradient(circle at 25% 18%, rgba(255, 217, 138, .08), transparent 22%),
-    radial-gradient(circle at 78% 72%, rgba(136, 223, 255, .08), transparent 23%),
-    #0b091b;
-}
-
-.first-line-card {
+.first-meeting-stage::before {
   position: absolute;
-  right: 22px;
-  bottom: 24px;
-  left: 22px;
-  z-index: 1;
-  padding: 15px 16px;
-  border: 1px solid rgba(255, 255, 255, .11);
-  border-radius: 16px;
-  background: rgba(25, 18, 49, .72);
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 248, 222, .26) 0 1px, transparent 1.4px),
+    radial-gradient(circle, rgba(146, 191, 208, .18) 0 1px, transparent 1.4px);
+  background-position: 12px 15px, 38px 42px;
+  background-size: 73px 73px, 117px 117px;
+  content: "";
+  opacity: .34;
+}
+
+.meeting-halo {
+  position: absolute;
+  top: 43%;
+  left: 50%;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(255, 228, 183, .09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 34px rgba(255, 228, 183, .018),
+    0 0 0 72px rgba(255, 228, 183, .012),
+    0 0 75px rgba(255, 215, 154, .07);
+  transform: translate(-50%, -50%);
+  animation: haloBreathe 4.8s ease-in-out infinite;
+}
+
+@keyframes haloBreathe {
+  0%, 100% { opacity: .62; transform: translate(-50%, -50%) scale(.96); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.phrase-tokens {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+}
+
+.phrase-token {
+  position: absolute;
+  display: grid;
+  min-width: 72px;
+  min-height: 48px;
+  padding: 9px 14px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 15px;
+  color: rgba(255, 255, 255, .42);
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, .07), transparent 48%),
+    rgba(22, 20, 34, .72);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .23), inset 0 1px 0 rgba(255, 255, 255, .05);
+  backdrop-filter: blur(7px);
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  transform: translate(-50%, -50%) rotate(var(--tilt, 0deg));
+  transition: opacity .55s ease, transform .55s cubic-bezier(.2, .75, .2, 1), border-color .35s ease, color .35s ease, box-shadow .35s ease;
+}
+
+.phrase-token.next {
+  border-color: rgba(255, 222, 166, .42);
+  color: #fff4d3;
+  box-shadow: 0 0 0 5px rgba(255, 219, 166, .035), 0 0 24px rgba(255, 211, 135, .1);
+  animation: tokenBreathe 1.8s ease-in-out infinite;
+}
+
+@keyframes tokenBreathe {
+  0%, 100% { filter: brightness(.92); }
+  50% { filter: brightness(1.18); }
+}
+
+.phrase-token.collected {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -100%) scale(1.28) rotate(var(--tilt, 0deg));
+}
+
+.phrase-token.wrong {
+  animation: tokenShake .38s ease;
+  border-color: rgba(255, 121, 173, .5);
+}
+
+@keyframes tokenShake {
+  0%, 100% { margin-left: 0; }
+  25% { margin-left: -6px; }
+  75% { margin-left: 6px; }
+}
+
+.phrase-assembly {
+  position: absolute;
+  right: 19px;
+  bottom: 20px;
+  left: 19px;
+  z-index: 4;
+  min-height: 96px;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: 17px;
+  background: rgba(13, 13, 25, .76);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
   backdrop-filter: blur(10px);
 }
 
-.first-line-card span {
+.phrase-assembly > span {
   display: block;
-  margin-bottom: 5px;
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: .13em;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, .38);
+  font-size: 9px;
+  letter-spacing: .14em;
 }
 
-.first-line-card strong {
+.phrase-assembly strong {
+  display: block;
+  min-height: 28px;
+  color: #fff3d1;
   font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.45;
+  letter-spacing: .06em;
 }
 
-.firefly {
-  position: absolute;
-  z-index: 3;
-  display: grid;
-  width: 46px;
-  height: 46px;
-  place-items: center;
-  border-radius: 50%;
-  background: transparent;
-  transform: translate(-50%, -50%);
-  animation: floatFirefly 2.6s ease-in-out infinite alternate;
-}
-
-.firefly::before {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #fff6bf;
-  box-shadow: 0 0 8px #ffe68b, 0 0 22px #ffd35c, 0 0 45px rgba(255, 211, 92, .65);
-  content: "";
-  transition: .35s ease;
-}
-
-.firefly::after {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  border: 1px solid rgba(255, 217, 138, .32);
-  border-radius: 50%;
-  content: "";
+.phrase-note {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, .5);
+  font-family: var(--serif);
+  font-size: 11px;
   opacity: 0;
-  transition: .45s ease;
+  transform: translateY(4px);
+  transition: .5s ease;
 }
 
-.firefly.collected {
-  pointer-events: none;
-  animation: none;
-}
-
-.firefly.collected::before {
-  opacity: 0;
-  transform: scale(3.2);
-}
-
-.firefly.collected::after {
+.phrase-note.show {
   opacity: 1;
-  transform: scale(1.8);
-  box-shadow: 0 0 22px rgba(255, 217, 138, .45);
-}
-
-@keyframes floatFirefly {
-  from { margin: -5px 0 0 -7px; }
-  to { margin: 7px 0 0 9px; }
+  transform: translateY(0);
 }
 
 .level-hint {
@@ -1748,7 +1802,7 @@ button:focus-visible {
     font-size: 24px;
   }
 
-  .interaction-field,
+  .first-meeting-stage,
   .memory-grid {
     min-height: 305px;
   }
